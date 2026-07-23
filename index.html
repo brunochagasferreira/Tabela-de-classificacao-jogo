@@ -1,130 +1,640 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela</title>
+
+    <title>🏆 Ranking de Jogadores</title>
+
     <link rel="stylesheet" href="estilos/style.css">
+
 </head>
+
+
 <body>
-    <h1>Jogadores</h1>
-  <br>
-  <input type="text" id="adcJogador" placeholder="Adicionar"><br><br>
-  <button type="submit" onclick="adicionarJogador()">Adicionar</button>
-  <button type="submit" onclick="zerarPontos()">Zerar Pontos</button>
-  <br><br>
-  <table>
-    <thead>
-      <tr>Tabela classificação </tr>
-      <tr>
-        <th>Nome</th>
-        <th>Vitórias</th>
-        <th>Empates</th>
-        <th>Derrotas</th>
-        <th>Pontos</th>
-        <th colspan="3">Ações</th>
-      </tr>
-    </thead>
-    <tbody id="tabelaJogadores">
-      <script>
-        var bruno = { 
-          nome: "Bruno", 
-          vitorias: 0, 
-          empates: 0, 
-          derrotas: 0, 
-          pontos: 0 
-        };
-      /* var myllena = {
-          nome: "Myllena",
-          vitorias: 0,
-          empates: 0,
-          derrotas: 0,
-};
-       var kyara = {
-         nome: "Kyara",
-         vitorias: 0,
-         empates: 0,
-         derrotas: 0,
-         pontos: 0
-};*/
 
-function calculaPontos(jogador) {
-  var pontos =
-    jogador.vitorias * 3 + jogador.empates + jogador.empates - jogador.derrotas;
-  return pontos;
-}
-bruno.pontos = calculaPontos(bruno);
-/*alinne.pontos = calculaPontos(alinne);
-waninne.pontos = calculaPontos(waninne);*/
 
-var jogadores = [bruno];
+<div class="container">
 
-function exibirJogadores(jogadores) {
-  var elemento = "";
-  for (var i = 0; i < jogadores.length; i++) {
-    elemento += "<tr><td>" + jogadores[i].nome + "</td>";
-    elemento += "<td>" + jogadores[i].vitorias + "</td>";
-    elemento += "<td>" + jogadores[i].empates + "</td>";
-    elemento += "<td>" + jogadores[i].derrotas + "</td>";
-    elemento += "<td>" + jogadores[i].pontos + "</td>";
-    elemento +=
-      "<td><button onClick='adicionarVitoria(" + i + ")'>Vitória</button></td>";
-    elemento +=
-      "<td><button onClick='adicionarEmpate(" + i + ")'>Empate</button></td>";
-    elemento +=
-      "<td><button onClick='adicionarDerrota(" + i + ")'>Derrota</button></td>";
-    elemento += "</tr>";
-  }
-  var tabelasJogadores = document.getElementById("tabelaJogadores");
-  tabelasJogadores.innerHTML = elemento;
-}
-exibirJogadores(jogadores);
+    <div class="card">
 
-function zerarPontos() {
-  for (var i = 0; i < jogadores.length; i++) {
-    var jogador = jogadores[i];
-    jogador.vitorias = 0;
-    jogador.empates = 0;
-    jogador.derrotas = 0;
-    jogador.pontos = calculaPontos(jogador);
-  }
-  exibirJogadores(jogadores);
-}
 
-function adicionarJogador() {
-  var jogadorNome = document.getElementById("adcJogador").value;
-  var lista = {
-    nome: jogadorNome,
-    vitorias: 0,
-    empates: 0,
-    derrotas: 0,
-    pontos: 0
-  };
-  jogadores.push(lista);
-  exibirJogadores(jogadores);
-  console.log(jogadorNome);
-}
-function adicionarVitoria(i) {
-  var jogador = jogadores[i];
-  jogador.vitorias++;
-  jogador.pontos = calculaPontos(jogador);
-  exibirJogadores(jogadores);
-}
-function adicionarEmpate(i) {
-  var jogador = jogadores[i];
-  jogador.empates++;
-  jogador.pontos = calculaPontos(jogador);
-  exibirJogadores(jogadores);
-}
+        <h1>🏆 Ranking de Jogadores</h1>
 
-function adicionarDerrota(i) {
-  var jogador = jogadores[i];
-  jogador.derrotas++;
- /* jogador.pontos = calculaPontos(jogador);*/
-  exibirJogadores(jogadores);
-}
+        <p class="subtitulo">
+            Controle de vitórias, empates, derrotas e classificação.
+        </p>
 
-      </script>
+
+        <div class="acoes">
+
+
+            <input
+                    type="text"
+                    id="adcJogador"
+                    placeholder="Digite o nome do jogador">
+            <input
+                    type="text"
+                    id="pesquisarJogador"
+                    placeholder="🔎 Pesquisar jogador"
+                    onkeyup="pesquisarJogador()">
+
+
+            <button class="btn" onclick="adicionarJogador()">
+                ➕ Adicionar
+            </button>
+
+
+            <button class="btn danger" onclick="zerarPontos()">
+                🔄 Zerar Pontos
+            </button>
+
+
+        </div>
+
+
+        <div class="info">
+
+            Total de jogadores:
+            <strong id="totalJogadores">0</strong>
+
+        </div>
+        <div class="estatisticas">
+
+            <div class="box">
+                🏟️
+                <span>Partidas</span>
+                <strong id="totalPartidas">0</strong>
+            </div>
+
+
+            <div class="box">
+                👑
+                <span>Líder</span>
+                <strong id="jogadorLider">-</strong>
+            </div>
+
+
+            <div class="box">
+                🏆
+                <span>Mais vitórias</span>
+                <strong id="maisVitorias">-</strong>
+            </div>
+
+
+            <div class="box">
+                ⭐
+                <span>Maior pontuação</span>
+                <strong id="maiorPontuacao">0</strong>
+            </div>
+
+        </div>
+
+
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                <tr>
+
+                    <th>Pos.</th>
+                    <th>Jogador</th>
+                    <th>🏆</th>
+                    <th>🤝</th>
+                    <th>❌</th>
+                    <th>⭐ Pontos</th>
+                    <th colspan="4">Ações</th>
+
+                </tr>
+
+                </thead>
+
+
+
+                <tbody id="tabelaJogadores">
+
+                </tbody>
+
+
+
+            </table>
+
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // seu javascript aqui
+
+</script>
+<script>
+
+
+    let jogadores = [
+
+        {
+            nome:"Bruno",
+            vitorias:0,
+            empates:0,
+            derrotas:0,
+            pontos:0
+        }
+
+    ];
+    function salvarDados(){
+
+        localStorage.setItem(
+            "jogadores",
+            JSON.stringify(jogadores)
+        );
+
+    }
+
+    function atualizarEstatisticas(){
+
+
+        let partidas = 0;
+
+
+        jogadores.forEach(jogador=>{
+
+
+            partidas +=
+                jogador.vitorias +
+                jogador.empates +
+                jogador.derrotas;
+
+
+        });
+
+
+
+        partidas = partidas / 2;
+
+
+
+        document.getElementById("totalPartidas")
+            .innerHTML = partidas;
+
+
+
+        if(jogadores.length > 0){
+
+
+            let lider = jogadores[0];
+
+
+            document.getElementById("jogadorLider")
+                .innerHTML = lider.nome;
+
+
+
+            let vencedor =
+                jogadores.reduce((a,b)=>
+
+                    a.vitorias > b.vitorias ? a : b
+
+                );
+
+
+            document.getElementById("maisVitorias")
+                .innerHTML =
+                vencedor.nome +
+                " ("+
+                vencedor.vitorias+
+                ")";
+
+
+
+            document.getElementById("maiorPontuacao")
+                .innerHTML =
+                lider.pontos;
+
+
+        }
+
+
+    }
+
+
+
+    // inicia tabela
+    window.onload=function(){
+
+        atualizarTabela();
+
+    };
+
+
+
+
+    // calcula pontos
+    function calculaPontos(jogador){
+
+        return jogador.vitorias * 3 + jogador.empates;
+
+    }
+
+
+
+
+
+    // atualiza tabela
+    function atualizarTabela(){
+
+
+        jogadores.forEach(jogador=>{
+
+            jogador.pontos = calculaPontos(jogador);
+
+        });
+
+
+
+        jogadores.sort((a,b)=> b.pontos - a.pontos);
+
+
+
+        let tabela = document.getElementById("tabelaJogadores");
+
+
+        tabela.innerHTML="";
+
+
+
+        jogadores.forEach((jogador,index)=>{
+
+
+            let lider = index == 0 ? "lider" : "";
+
+
+
+            tabela.innerHTML += `
+
+
+        <tr class="${lider}">
+
+
+        <td>${mostrarMedalha(index)}</td>
+
+
+        <td>${jogador.nome}</td>
+
+
+        <td>${jogador.vitorias}</td>
+
+
+        <td>${jogador.empates}</td>
+
+
+        <td>${jogador.derrotas}</td>
+
+
+        <td>${jogador.pontos}</td>
+
+
+
+        <td>
+
+        <button
+        class="btn-table vitoria"
+        onclick="adicionarVitoria(${index})">
+
+        🏆 Vitória
+
+        </button>
+
+        </td>
+
+
+
+        <td>
+
+        <button
+        class="btn-table empate"
+        onclick="adicionarEmpate(${index})">
+
+        🤝 Empate
+
+        </button>
+
+        </td>
+
+
+
+        <td>
+
+        <button
+        class="btn-table derrota"
+        onclick="adicionarDerrota(${index})">
+
+        ❌ Derrota
+
+        </button>
+
+        </td>
+
+
+
+        <td>
+
+        <button
+        class="btn-table excluir"
+        onclick="removerJogador(${index})">
+
+        🗑️
+
+        </button>
+
+        </td>
+
+
+
+        </tr>
+
+
+        `;
+
+
+        });
+
+
+
+        document.getElementById("totalJogadores").innerHTML =
+            jogadores.length;
+
+
+        salvarDados();
+
+
+        atualizarEstatisticas();
+
+    }
+
+    function mostrarMedalha(posicao){
+
+
+        if(posicao === 0){
+
+            return "🥇";
+
+        }
+
+
+        if(posicao === 1){
+
+            return "🥈";
+
+        }
+
+
+        if(posicao === 2){
+
+            return "🥉";
+
+        }
+
+
+        return posicao + 1;
+
+
+    }
+
+    function pesquisarJogador(){
+
+
+        let texto =
+            document
+                .getElementById("pesquisarJogador")
+                .value
+                .toLowerCase();
+
+
+
+        let linhas =
+            document
+                .querySelectorAll("#tabelaJogadores tr");
+
+
+
+        linhas.forEach(linha=>{
+
+
+            let nome =
+                linha
+                    .children[1]
+                    .textContent
+                    .toLowerCase();
+
+
+
+            if(nome.includes(texto)){
+
+
+                linha.style.display="";
+
+
+            }else{
+
+
+                linha.style.display="none";
+
+
+            }
+
+
+        });
+
+
+    }
+
+    // adicionar jogador
+    function adicionarJogador(){
+
+
+        let campo = document.getElementById("adcJogador");
+
+
+        let nome = campo.value.trim();
+
+
+
+        if(nome==""){
+
+            alert("Digite o nome do jogador!");
+
+            return;
+
+        }
+
+
+
+        jogadores.push({
+
+            nome:nome,
+
+            vitorias:0,
+
+            empates:0,
+
+            derrotas:0,
+
+            pontos:0
+
+        });
+
+
+
+        campo.value="";
+
+
+        atualizarTabela();
+
+
+    }
+
+
+
+
+
+    // zerar pontos
+    function zerarPontos(){
+
+
+        if(confirm("Deseja realmente zerar todos os pontos?")){
+
+
+            jogadores.forEach(jogador=>{
+
+
+                jogador.vitorias=0;
+                jogador.empates=0;
+                jogador.derrotas=0;
+                jogador.pontos=0;
+
+
+            });
+
+
+            atualizarTabela();
+
+
+        }
+
+
+    }
+
+
+
+
+    // adicionar vitória
+    function adicionarVitoria(index){
+
+
+        jogadores[index].vitorias++;
+
+
+        atualizarTabela();
+
+
+    }
+
+
+
+
+
+    // adicionar empate
+    function adicionarEmpate(index){
+
+
+        jogadores[index].empates++;
+
+
+        atualizarTabela();
+
+
+    }
+
+
+
+
+
+    // adicionar derrota
+    function adicionarDerrota(index){
+
+
+        jogadores[index].derrotas++;
+
+
+        atualizarTabela();
+
+
+    }
+
+
+
+
+
+    // excluir jogador
+    function removerJogador(index){
+
+
+        if(confirm("Deseja excluir este jogador?")){
+
+
+            jogadores.splice(index,1);
+
+
+            atualizarTabela();
+
+
+        }
+
+
+    }
+
+
+
+
+
+    // tecla Enter adiciona jogador
+    document
+        .getElementById("adcJogador")
+        .addEventListener("keypress",function(event){
+
+
+            if(event.key==="Enter"){
+
+                adicionarJogador();
+
+            }
+
+
+        });
+
+
+
+</script>
+
+
 </body>
+
 </html>
